@@ -29,8 +29,16 @@ public class UserRepositoryImplCollection implements UserRepository {
         return user;
     }
 
+    // Busca un usuario por id recorriendo la lista. Retorna null si no existe.
     @Override
     public User selectById(int id) {
+
+        for (User user : users) {
+            if (user.getId() != null && user.getId() == id) {
+                return user;
+            }
+        }
+
         return null;
     }
 
@@ -47,13 +55,31 @@ public class UserRepositoryImplCollection implements UserRepository {
         return users;
     }
 
+    // Reemplaza en la lista el usuario que tenga el mismo id. Retorna null si no existe.
     @Override
     public User updateUser(User user) {
+
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getId().equals(user.getId())) {
+                users.set(i, user);
+                return user;
+            }
+        }
+
         return null;
     }
 
+    // Elimina el usuario con ese id. Retorna true si se eliminó, false si no existía.
     @Override
-    public void deleteById(int id) {
+    public boolean deleteById(int id) {
 
+        return users.removeIf(user -> user.getId() != null && user.getId() == id);
+    }
+
+    // Cantidad de usuarios adicionados en el array.
+    @Override
+    public int count() {
+
+        return users.size();
     }
 }

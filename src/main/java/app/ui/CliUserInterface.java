@@ -60,37 +60,53 @@ public class CliUserInterface {
 
     public void userMenu(){
 
-        int option = DataTypeValidator.validateInt("Seleccione 1. registrar usuario " +
-                "2. Consultar Usuario por id" +
-                "3. Consultar todos los usuarios");
+        int option;
 
-        switch (option){
-            case 1:
-                System.out.println("Registrar Usuario");
-                userView.createUser();
-                break;
-            case 2:
-                System.out.println("Consultar usuario por id");
-                int id = DataTypeValidator.validateInt("Ingrese el id del usuario a consultar");
-                userView.selectById(id);
-                break;
-            case 3:
-                System.out.println("Consultar todos los usuarios");
-                userView.selectUsers();
-                break;
-            default:
-                System.out.println("Ingrese una opción valida");
-        }
+        do {
+            option = DataTypeValidator.validateInt("\n--- Menú de usuarios ---\n" +
+                    "1. Registrar usuario\n" +
+                    "2. Consultar usuario por id\n" +
+                    "3. Consultar todos los usuarios\n" +
+                    "4. Actualizar usuario\n" +
+                    "5. Eliminar usuario\n" +
+                    "6. Contar usuarios registrados\n" +
+                    "0. Volver al menú principal");
 
+            switch (option){
+                case 1:
+                    System.out.println("Registrar Usuario");
+                    userView.createUser();
+                    break;
+                case 2:
+                    System.out.println("Consultar usuario por id");
+                    int id = DataTypeValidator.validateInt("Ingrese el id del usuario a consultar");
+                    userView.selectUserById(id);
+                    break;
+                case 3:
+                    System.out.println("Consultar todos los usuarios");
+                    userView.selectUsers();
+                    break;
+                case 4:
+                    System.out.println("Actualizar usuario");
+                    userView.updateUser();
+                    break;
+                case 5:
+                    System.out.println("Eliminar usuario");
+                    userView.deleteUser();
+                    break;
+                case 6:
+                    System.out.println("Contar usuarios registrados");
+                    userView.countUsers();
+                    break;
+                case 0:
+                    System.out.println("Volviendo al menú principal");
+                    break;
+                default:
+                    System.out.println("Ingrese una opción valida");
+            }
 
-
-
+        } while (option != 0);
 
     }
-
-
-
-
-
 
 }

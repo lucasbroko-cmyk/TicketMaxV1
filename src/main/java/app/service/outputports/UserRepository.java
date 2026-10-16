@@ -11,7 +11,8 @@ public interface UserRepository {
     public User selectById(int id);
     public List<User> selectAll();
     public User updateUser(User user);
-    public void deleteById(int id);
+    public boolean deleteById(int id);
+    public int count();
 
 
 

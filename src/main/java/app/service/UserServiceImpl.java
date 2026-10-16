@@ -25,13 +25,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void selectById(int id) {
+    public User selectUserById(int id) {
 
+        return userRepository.selectById(id);
     }
 
     @Override
-    public void update() {
+    public User updateUser(User user) {
 
+        return userRepository.updateUser(user);
     }
 
     @Override
@@ -41,7 +43,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public boolean deleteUser(int id) {
 
+        return userRepository.deleteById(id);
+    }
+
+    @Override
+    public int countUsers() {
+
+        return userRepository.count();
     }
 }

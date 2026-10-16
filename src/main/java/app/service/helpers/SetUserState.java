@@ -1,20 +1,15 @@
 package app.service.helpers;
 
 import app.domain.enums.SelectStateEnum;
-
-import java.util.Scanner;
+import app.service.validators.DataTypeValidator;
 
 public class SetUserState {
-
-    static Scanner sc = new Scanner(System.in);
 
 
     public static String getUserState(){
 
-        System.out.println("Seleccione 1. Activo 2. Inactivo 3. Bloqueado");
-        int option = sc.nextInt();
+        int option = DataTypeValidator.validateInt("Seleccione 1. Activo 2. Inactivo 3. Bloqueado");
         String state = "";
-        sc.nextLine();
         switch (option){
             case 1:
                 state = SelectStateEnum.ACTIVE.getState();

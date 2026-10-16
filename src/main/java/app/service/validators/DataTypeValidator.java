@@ -58,4 +58,11 @@ public class DataTypeValidator {
             }
         }
     }
+
+    // Para actualizar: si el usuario solo presiona Enter, se conserva el valor actual.
+    public static String validateOptionalString(String prompt, String currentValue){
+        System.out.println(prompt + " (Enter para conservar el valor actual)");
+        String value = sc.nextLine().trim();
+        return value.isEmpty() ? currentValue : value;
+    }
 }

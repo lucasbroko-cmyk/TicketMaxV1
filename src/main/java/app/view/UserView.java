@@ -40,8 +40,17 @@ public class UserView {
     }
 
 
-    public void selectById(int id) {
+    // Consulta un usuario por su id y lo muestra en consola
+    public void selectUserById(int id) {
 
+        User user = userService.selectUserById(id);
+
+        if (user == null) {
+            System.out.println("No existe un usuario con el id " + id);
+            return;
+        }
+
+        printUser(user);
     }
 
 
@@ -52,14 +61,98 @@ public class UserView {
     }
 
 
-    public void update() {
+    // Actualiza los datos de un usuario existente (el id no se modifica)
+    public void updateUser() {
 
+        int id = DataTypeValidator.validateInt("Ingrese el id del usuario a actualizar: ");
+        User current = userService.selectUserById(id);
+
+        if (current == null) {
+            System.out.println("No existe un usuario con el id " + id);
+            return;
+        }
+
+        System.out.println("Datos actuales del usuario:");
+        printUser(current);
+        System.out.println("Ingrese los nuevos datos:");
+
+        String name = DataTypeValidator.validateOptionalString("Nombre: ", current.getName());
+        String lastName = DataTypeValidator.validateOptionalString("Apellido: ", current.getLastName());
+        String email = DataTypeValidator.validateOptionalString("Correo: ", current.getEmail());
+        String phone = DataTypeValidator.validateOptionalString("Teléfono: ", current.getPhone());
+        String password = DataTypeValidator.validateOptionalString("Contraseña: ", current.getPassword());
+
+        System.out.println("Estado (cualquier otro número conserva el actual: " + current.isState() + ")");
+        String state = SetUserState.getUserState();
+        if (state.isEmpty()) {
+            state = current.isState();
+        }
+
+        String city = DataTypeValidator.validateOptionalString("Ciudad: ", current.getCity());
+
+        System.out.println("Preferencia (cualquier otro número conserva la actual: " + current.getPreferences() + ")");
+        String preferences = setUserPreferences();
+        if (preferences.isEmpty()) {
+            preferences = current.getPreferences();
+        }
+
+        User updated = new User(id, name, lastName, email, phone, password, state, city, preferences);
+        User result = userService.updateUser(updated);
+
+        if (result == null) {
+            System.out.println("No se pudo actualizar el usuario");
+        } else {
+            System.out.println("Usuario actualizado correctamente:");
+            printUser(result);
+        }
+    }
+
+
+    // Elimina un usuario por id, pidiendo confirmación antes de borrar
+    public void deleteUser() {
+
+        int id = DataTypeValidator.validateInt("Ingrese el id del usuario a eliminar: ");
+        User user = userService.selectUserById(id);
+
+        if (user == null) {
+            System.out.println("No existe un usuario con el id " + id);
+            return;
+        }
+
+        printUser(user);
+        int confirm = DataTypeValidator.validateInt("¿Está seguro de eliminar este usuario? 1. Sí 2. No");
+
+        if (confirm == 1) {
+            boolean deleted = userService.deleteUser(id);
+            System.out.println(deleted ? "Usuario eliminado correctamente" : "No se pudo eliminar el usuario");
+        } else {
+            System.out.println("Operación cancelada");
+        }
+    }
+
+
+    // Método adicional: muestra cuántos usuarios hay adicionados en el array
+    public void countUsers() {
+
+        System.out.println("Total de usuarios registrados: " + userService.countUsers());
     }
 
 
     // métodos Helper
 
 
+    private void printUser(User user) {
+
+        System.out.println("--------------------------------");
+        System.out.println("ID: " + user.getId());
+        System.out.println("Nombre: " + user.getName() + " " + user.getLastName());
+        System.out.println("Correo: " + user.getEmail());
+        System.out.println("Teléfono: " + user.getPhone());
+        System.out.println("Estado: " + user.isState());
+        System.out.println("Ciudad: " + user.getCity());
+        System.out.println("Preferencias: " + user.getPreferences());
+        System.out.println("--------------------------------");
+    }
 
 
     public String setUserPreferences(){
